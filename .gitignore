@@ -102,3 +102,25 @@ dist
 
 # TernJS port file
 .tern-port
+
+.DS_Store
+
+node_modules
+
+# https cert
+# cert
+
+# front-end dist file
+sim
+prod
+
+# app config file
+# src/config/index.ts
+
+# app env files
+.env
+.env.development
+.env.simulation
+.env.production
+
+apps
