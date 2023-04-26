@@ -9,7 +9,6 @@ import router from '@/router'
 import { PROCESS_ENV } from '@/constants'
 import { getEnv, isEnv } from '@/utils'
 import { APP_CONFIG } from '@/config'
-import { HomeService } from './service'
 
 if (isEnv(PROCESS_ENV.UNKNOWN)) {
   throw new Error('Unknown Process Env')
@@ -59,8 +58,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     })
   }
 })
-
-HomeService.clearCurrentActiveUsers()
 
 const server: Server = (ENV === 'development')
   ? http.createServer(app)
