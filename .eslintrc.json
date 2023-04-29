@@ -3,20 +3,19 @@
     "es6": true,
     "node": true
   },
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
   "overrides": [],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
-    "indent": ["error", 2],
     "semi": ["error", "never"],
     "quotes": ["warn", "single"],
     "key-spacing": ["warn", { "beforeColon": false, "afterColon": true }],
-    "new-cap": ["warn", { "newIsCap": true, "capIsNew": false}],
-    "no-multiple-empty-lines": ["warn", {"max": 1}],
+    "new-cap": ["warn", { "newIsCap": true, "capIsNew": false }],
+    "no-multiple-empty-lines": ["warn", { "max": 1 }],
     "comma-style": ["warn", "last"],
     "comma-spacing": ["warn", { "before": false, "after": true }],
     "comma-dangle": ["warn", "always-multiline"],
@@ -27,7 +26,7 @@
     "global-require": "off",
     "no-console": "warn",
     "object-curly-spacing": ["error", "always"],
-    "space-before-function-paren": ["error", "always"],
+    "space-before-function-paren": "off",
     "no-trailing-spaces": "warn",
     "space-before-blocks": ["error", "always"],
     "semi-spacing": ["error", { "before": false, "after": true }],
@@ -35,7 +34,10 @@
     "space-infix-ops": "error",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-inferrable-types": "off",
-    "@typescript-eslint/no-var-requires": "off"
+    "@typescript-eslint/no-var-requires": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "block-spacing": "error"
   },
   "ignorePatterns": ["node_modules/*", "db/*.js"]
 }

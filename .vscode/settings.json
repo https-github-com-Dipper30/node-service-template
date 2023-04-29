@@ -4,6 +4,5 @@
   },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "eslint.validate": ["javascript", "typescript"],
-  "prettier.requireConfig": true
+  "eslint.validate": ["javascript", "typescript"]
 }

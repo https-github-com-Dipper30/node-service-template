@@ -14,18 +14,17 @@ const {
 } = models
 
 class Auth extends BaseService {
-
-  constructor () {
+  constructor() {
     super()
   }
 
   /**
    * 查询 username 是否存在
    * @param username
-   * @param ignoreCase 是否忽略大小写查询
+   * @param ignoreCase 是否忽略大小写查询, 默认忽略
    * @returns {boolean}
    */
-  async isUsernameExisting (username: string, ignoreCase: boolean = true) {
+  async isUsernameExisting(username: string, ignoreCase: boolean = true) {
     // mysql查询默认不区分大小写
     UserModel.findOne({
       where: {
@@ -33,18 +32,16 @@ class Auth extends BaseService {
       },
     })
     const usernameQuery = ignoreCase
-      ? sequelize.where(
-        sequelize.fn('LOWER', sequelize.col('username')), username.toLowerCase(),
-      )
+      ? sequelize.where(sequelize.fn('LOWER', sequelize.col('username')), username.toLowerCase())
       : { username }
     const user = await UserModel.findOne({
       where: usernameQuery,
       attributes: ['id', 'username'],
     })
-    return user ? true : false
+    return !!user
   }
 
-  async loginAccount (p: { username: string, password: string }) {
+  async loginAccount(p: { username: string; password: string }) {
     const { username, password } = p
 
     const encryptedPassword = await encryptMD5(password)
@@ -53,10 +50,12 @@ class Auth extends BaseService {
         username,
         password: encryptedPassword,
       },
-      include: [{
-        model: RoleModel,
-        as: 'role',
-      }],
+      include: [
+        {
+          model: RoleModel,
+          as: 'role',
+        },
+      ],
       attributes: ['id', 'username'],
     })
 
@@ -65,7 +64,7 @@ class Auth extends BaseService {
     // 附带用户auth字段
     const auth = await this.getAuthByUserId(user.id)
     type PickUser = Pick<typeof user, 'id' | 'username' | 'password'>
-    type RoleAttribute = { role: { id: number, name: string }}
+    type RoleAttribute = { role: { id: number; name: string } }
     const data = {
       ...(user.dataValues as unknown as PickUser & RoleAttribute),
       auth,
@@ -73,7 +72,7 @@ class Auth extends BaseService {
     return data
   }
 
-  async getUserById (id: number) {
+  async getUserById(id: number) {
     const user = await UserModel.findByPk(id, {
       include: [
         {
@@ -96,13 +95,7 @@ class Auth extends BaseService {
     return user.dataValues
   }
 
-  async getUsers (p: {
-    id?: number,
-    username?: string,
-    rid?: number,
-    page: number,
-    size: number
-  }) {
+  async getUsers(p: { id?: number; username?: string; rid?: number; page: number; size: number }) {
     const { id, username, rid, page, size } = p
     const where: any = {}
     if (id) where.id = id
@@ -135,18 +128,16 @@ class Auth extends BaseService {
     return users
   }
 
-  async updateUserAuth (p: { uid: number, auth: number[] }) {
+  async updateUserAuth(p: { uid: number; auth: number[] }) {
     const t = await sequelize.transaction()
     try {
       const user = await UserModel.findByPk(p.uid)
       if (!user) throw new AuthException(ERROR_CODE.USER_NOT_FOUND)
 
-      await UserAuthModel.destroy(
-        {
-          where: { uid: user.id },
-          transaction: t,
-        },
-      )
+      await UserAuthModel.destroy({
+        where: { uid: user.id },
+        transaction: t,
+      })
       const records = p.auth.map(a => ({ uid: user.id, aid: a }))
       await UserAuthModel.bulkCreate(records, { transaction: t })
       await t.commit()
@@ -159,7 +150,7 @@ class Auth extends BaseService {
     }
   }
 
-  async updateUserInfo (p: { tokenUserId: number, username?: string, password?: string, newPassword?: string }) {
+  async updateUserInfo(p: { tokenUserId: number; username?: string; password?: string; newPassword?: string }) {
     const user = await UserModel.findByPk(p.tokenUserId)
     if (!user) throw new AuthException(ERROR_CODE.USER_NOT_FOUND)
 
@@ -170,7 +161,8 @@ class Auth extends BaseService {
     }
 
     if (p.newPassword && p.password) {
-      if (encryptMD5(p.password) != user.dataValues.password) throw new AuthException(ERROR_CODE.AUTH_ERROR, '密码不正确')
+      if (encryptMD5(p.password) != user.dataValues.password)
+        throw new AuthException(ERROR_CODE.AUTH_ERROR, '密码不正确')
       user.password = encryptMD5(p.newPassword)
     }
 
@@ -197,7 +189,7 @@ class Auth extends BaseService {
     return data
   }
 
-  async getAuthByUserId (uid: number): Promise<number[]> {
+  async getAuthByUserId(uid: number): Promise<number[]> {
     const auth = await UserAuthModel.findAll({
       where: { uid },
     })
@@ -208,7 +200,7 @@ class Auth extends BaseService {
   /**
    * 创建管理员账号
    */
-  async createAccount (p: { username: string, password: string, rid: number, cid?: number }) {
+  async createAccount(p: { username: string; password: string; rid: number; cid?: number }) {
     const t = await sequelize.transaction()
     try {
       const { username, password, rid, cid } = p
@@ -223,15 +215,18 @@ class Auth extends BaseService {
       }
       const currentTS = getTS()
 
-      const user = await UserModel.create({
-        username,
-        password: encryptMD5(password),
-        rid,
-        cid,
-        destroyed: false,
-        createdAt: currentTS,
-        updatedAt: currentTS,
-      }, { transaction: t })
+      const user = await UserModel.create(
+        {
+          username,
+          password: encryptMD5(password),
+          rid,
+          cid,
+          destroyed: false,
+          createdAt: currentTS,
+          updatedAt: currentTS,
+        },
+        { transaction: t },
+      )
       if (!user) throw new DatabaseException(ERROR_CODE.DATABASE_ERROR, 'Fail To Create New User')
 
       // 获取角色默认权限
@@ -248,23 +243,23 @@ class Auth extends BaseService {
     }
   }
 
-  async getAuthorities (p: { id?: number, name?: string, rid?: number }) {
+  async getAuthorities(p: { id?: number; name?: string; rid?: number }) {
     const { id, name } = p
 
-    const criteria: { id?: number, name?: string } = {}
+    const criteria: { id?: number; name?: string } = {}
     if (id) criteria.id = Number(id)
     if (name) criteria.name = name
 
-    const auth = await AuthModel.findAll({
-      where: criteria,
-      order: ['id'],
-    })
+    const auth =
+      (await AuthModel.findAll({
+        where: criteria,
+        order: ['id'],
+      })) || []
 
     return auth
   }
 
-  async createAuthority (p: { id: number, name: string, description: string }) {
-
+  async createAuthority(p: { id: number; name: string; description: string }) {
     const { id, name, description } = p
 
     const idExists = await AuthModel.findByPk(id)
@@ -277,10 +272,9 @@ class Auth extends BaseService {
     })
 
     return auth
-
   }
 
-  async updateAuthority (p: { id: number, name?: string, description?: string }) {
+  async updateAuthority(p: { id: number; name?: string; description?: string }) {
     const { id, name, description } = p
 
     const auth = await AuthModel.findByPk(id)
@@ -293,18 +287,21 @@ class Auth extends BaseService {
     return auth
   }
 
-  async createRole (p: { id: number, name: string, description?: string, auth: number[] }) {
+  async createRole(p: { id: number; name: string; description?: string; auth: number[] }) {
     const t = await sequelize.transaction()
-    try {
-      const { id, name, description, auth } = p
-      const roleExisting = await RoleModel.findByPk(id)
-      if (roleExisting) throw new AuthException(ERROR_CODE.ROLE_ERROR, 'role exists')
+    const { id, name, description, auth } = p
+    const roleExisting = await RoleModel.findByPk(id)
+    if (roleExisting) throw new AuthException(ERROR_CODE.ROLE_ERROR, 'role exists')
 
-      const role = await RoleModel.create({
-        id,
-        name,
-        description: description ?? '',
-      }, { transaction: t })
+    try {
+      const role = await RoleModel.create(
+        {
+          id,
+          name,
+          description: description ?? '',
+        },
+        { transaction: t },
+      )
       if (!role) throw new AuthException(ERROR_CODE.ROLE_ERROR)
 
       // 创建新的role auth映射关系
@@ -315,7 +312,7 @@ class Auth extends BaseService {
       return { ...role.dataValues, auth }
     } catch (error) {
       await t.rollback()
-      throw new DatabaseException()
+      throw error
     }
   }
 
@@ -324,10 +321,10 @@ class Auth extends BaseService {
    * @param p
    * @returns
    */
-  async getRoles (p: { id?: number, name?: string }) {
+  async getRoles(p: { id?: number; name?: string }) {
     const { id, name } = p
 
-    const criteria: { id?: number, name?: string } = {}
+    const criteria: { id?: number; name?: string } = {}
     if (id) criteria.id = Number(id)
     if (name) criteria.name = name
 
@@ -343,7 +340,7 @@ class Auth extends BaseService {
   /**
    * 仅获取管理员角色
    */
-  async getAdminRoles () {
+  async getAdminRoles() {
     const roleAuths = await RoleAuthModel.findAll({ where: { aid: 1 } })
     const rids = roleAuths.map((r: any) => r.rid)
     const roles = await RoleModel.findAll({
@@ -357,7 +354,7 @@ class Auth extends BaseService {
     return roles
   }
 
-  async updateRole (p: { id: number, name?: string, description?: string, auth: [] }) {
+  async updateRole(p: { id: number; name?: string; description?: string; auth: [] }) {
     const { id, name, description, auth } = p
 
     const role = await RoleModel.findByPk(id)
@@ -376,7 +373,6 @@ class Auth extends BaseService {
     const newAuth = await RoleAuthModel.getAuthByRoleId(role.id)
     return { ...role.dataValues, auth: newAuth }
   }
-
 }
 
 export default new Auth()

@@ -1,7 +1,5 @@
 'use strict'
-const {
-  Model,
-} = require('sequelize')
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class UserAuthority extends Model {
     /**
@@ -9,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate (models) {
+    static associate(models) {
       // define association here
       models.Authority.belongsToMany(models.User, {
         through: UserAuthority,
@@ -26,19 +24,22 @@ module.exports = (sequelize, DataTypes) => {
       })
     }
   }
-  UserAuthority.init({
-    uid: {
-      primaryKey: true,
-      type: DataTypes.INTEGER,
+  UserAuthority.init(
+    {
+      uid: {
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      aid: {
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
     },
-    aid: {
-      primaryKey: true,
-      type: DataTypes.INTEGER,
+    {
+      sequelize,
+      timestamps: false,
+      modelName: 'UserAuthority',
     },
-  }, {
-    sequelize,
-    timestamps: false,
-    modelName: 'UserAuthority',
-  })
+  )
   return UserAuthority
 }

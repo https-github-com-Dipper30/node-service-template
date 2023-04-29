@@ -2,19 +2,15 @@ import { TUserSimpleProfile } from '@/types'
 import BaseService from './BaseService'
 
 const models = require('@/db/models')
-const {
-  User: UserModel,
-  CurrentActiveUser: CurrentActiveUserModel,
-} = models
+const { User: UserModel, CurrentActiveUser: CurrentActiveUserModel } = models
 class Home extends BaseService {
-
   transporter: any
 
-  constructor () {
+  constructor() {
     super()
   }
 
-  async loginUser (user: TUserSimpleProfile): Promise<boolean> {
+  async loginUser(user: TUserSimpleProfile): Promise<boolean> {
     const loggedIn = await CurrentActiveUserModel.findOne({
       where: {
         uid: user.id,
@@ -28,7 +24,7 @@ class Home extends BaseService {
     })
   }
 
-  async logoutUser (uid: number) {
+  async logoutUser(uid: number) {
     return await CurrentActiveUserModel.destroy({
       where: {
         uid,
@@ -36,14 +32,14 @@ class Home extends BaseService {
     })
   }
 
-  async clearCurrentActiveUsers () {
+  async clearCurrentActiveUsers() {
     await CurrentActiveUserModel.destroy({
       where: {},
       truncate: true,
     })
   }
 
-  async getDailyActiveUsers (): Promise<number[][]> {
+  async getDailyActiveUsers(): Promise<number[][]> {
     return [
       [1682524800, 10],
       [1682438400, 20],
@@ -55,7 +51,7 @@ class Home extends BaseService {
     ]
   }
 
-  async getMonthlyActiveUsers (): Promise<number[][]> {
+  async getMonthlyActiveUsers(): Promise<number[][]> {
     return [
       [1680278400, 180],
       [1677600000, 250],
@@ -64,10 +60,9 @@ class Home extends BaseService {
       [1669824000, 400],
       [1667232000, 220],
     ]
-
   }
 
-  async getCurrentActiveUsers (): Promise<TUserSimpleProfile[]> {
+  async getCurrentActiveUsers(): Promise<TUserSimpleProfile[]> {
     const users = await UserModel.findAll({
       attributes: ['id', 'username'],
     })

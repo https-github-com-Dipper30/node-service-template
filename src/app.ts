@@ -59,12 +59,16 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   }
 })
 
-const server: Server = (ENV === 'development')
-  ? http.createServer(app)
-  : https.createServer({
-    key: fs.readFileSync('cert/key.pem'),
-    cert: fs.readFileSync('cert/cert.pem'),
-  }, app)
+const server: Server =
+  ENV === 'development'
+    ? http.createServer(app)
+    : https.createServer(
+        {
+          key: fs.readFileSync('cert/key.pem'),
+          cert: fs.readFileSync('cert/cert.pem'),
+        },
+        app,
+      )
 
 server.listen(PORT, () => {
   console.log(`APTX4869 Studio Template Server Started Successfully on port ${PORT}!`)

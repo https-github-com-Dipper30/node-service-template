@@ -112,14 +112,21 @@ export const isEmptyValue = (v: any): boolean => v === null || v === undefined
  * check if the number is between min and max
  * or check if the length of string is between min and max
  */
-export const isBetween = (data: any, leftBound: number, rightBound: number, withLeft: boolean = true, withRight: boolean = true) => {
+export const isBetween = (
+  data: any,
+  leftBound: number,
+  rightBound: number,
+  withLeft: boolean = true,
+  withRight: boolean = true,
+) => {
   try {
     if (typeof data === 'string') {
-      return (withLeft ? data.length >= leftBound : data.length > leftBound)
-        && (withRight ? data.length <= rightBound : data.length > rightBound)
+      return (
+        (withLeft ? data.length >= leftBound : data.length > leftBound) &&
+        (withRight ? data.length <= rightBound : data.length > rightBound)
+      )
     } else if (typeof data === 'number') {
-      return (withLeft ? data >= leftBound : data > leftBound)
-        && (withRight ? data <= rightBound : data > rightBound)
+      return (withLeft ? data >= leftBound : data > leftBound) && (withRight ? data <= rightBound : data > rightBound)
     } else return false
   } catch (error) {
     return false
@@ -132,7 +139,8 @@ export const isEmail = (email: string) => {
 
 export const isPassword = (pwd: string) => /^[0-9a-zA-Z!@]{6,18}$/.test(pwd)
 
-export const isUsername = (username: string) => /^((?!\\|\/|:|\*|\?|<|>|\||'|%|@|#|\^|\(|\)|&|-|`).){1,18}$/.test(username)
+export const isUsername = (username: string) =>
+  /^((?!\\|\/|:|\*|\?|<|>|\||'|%|@|#|\^|\(|\)|&|-|`).){1,18}$/.test(username)
 
 /**
  * 混淆明文，返回密文
@@ -151,9 +159,9 @@ export const mixMessage = (pt: string) => {
 }
 
 /**
-* 将前端混淆的密文解密
-* 算法: charCode - offset
-*/
+ * 将前端混淆的密文解密
+ * 算法: charCode - offset
+ */
 export const decryptMessage = (ct: string) => {
   const pt = []
   let initialOffset = 2

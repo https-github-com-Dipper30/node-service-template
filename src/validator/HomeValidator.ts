@@ -2,33 +2,20 @@ import { Request, Response, NextFunction } from 'express'
 import BaseValidator from './BaseValidator'
 
 class HomeValidator extends BaseValidator {
-
-  constructor () {
+  constructor() {
     super()
   }
 
-  getCurrentActiveUsers (req: Request, res: Response, next: NextFunction) {
-    try {
-      next()
-    } catch (error) {
-      next(error)
-    }
+  getCurrentActiveUsers(req: Request, res: Response, next: NextFunction) {
+    next()
   }
 
-  getDailyActiveUsers (req: Request, res: Response, next: NextFunction) {
-    try {
-      next()
-    } catch (error) {
-      next(error)
-    }
+  getDailyActiveUsers(req: Request, res: Response, next: NextFunction) {
+    next()
   }
 
-  getMonthlyActiveUsers (req: Request, res: Response, next: NextFunction) {
-    try {
-      next()
-    } catch (error) {
-      next(error)
-    }
+  getMonthlyActiveUsers(req: Request, res: Response, next: NextFunction) {
+    next()
   }
 }
 

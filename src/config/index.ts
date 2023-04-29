@@ -23,7 +23,6 @@ const getConfig = (attribute: ENV_VARIABLE) => {
 }
 
 const APP_CONFIG: IAppConfig = {
-
   PORT: parseInt(getConfig(ENV_VARIABLE.PORT)),
   DOMAIN: getConfig(ENV_VARIABLE.DOMAIN),
 
@@ -51,10 +50,7 @@ const db: DatabaseConfig = {
   database: APP_CONFIG.DB.DATABASE,
 }
 if (ENV === PROCESS_ENV.DEVELOPMENT) {
-  db.dialectOptions = { 'socketPath': '/tmp/mysql.sock' }
+  db.dialectOptions = { socketPath: '/tmp/mysql.sock' }
 }
 
-export {
-  APP_CONFIG,
-  db,
-}
+export { APP_CONFIG, db }

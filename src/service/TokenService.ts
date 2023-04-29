@@ -7,8 +7,7 @@ import { getUnixTS } from '@/utils'
 import { TokenDecode } from '@/types'
 
 class Token extends BaseService {
-
-  constructor () {
+  constructor() {
     super()
   }
 
@@ -17,16 +16,18 @@ class Token extends BaseService {
    * @param account
    * @returns
    */
-  async generateToken (account: { id: number, rid: number, auth: number[] }) {
+  async generateToken(account: { id: number; rid: number; auth: number[] }) {
     const { id, rid, auth } = account
     try {
-      return jwt.sign({ uid: id, rid, auth }, APP_CONFIG.KEYS.TOKEN_PRIVATE_KEY, { expiresIn: APP_CONFIG.KEYS.TOKEN_EXPIRE_IN })
+      return jwt.sign({ uid: id, rid, auth }, APP_CONFIG.KEYS.TOKEN_PRIVATE_KEY, {
+        expiresIn: APP_CONFIG.KEYS.TOKEN_EXPIRE_IN,
+      })
     } catch (error) {
       return new TokenException(ERROR_CODE.TOKEN_ERROR, 'Token Generator Error')
     }
   }
 
-  async verifyToken (token: string) {
+  async verifyToken(token: string) {
     if (!token) throw new TokenException(ERROR_CODE.TOKEN_ERROR, 'Missing Token')
     let decode: TokenDecode | null = null
     try {
@@ -40,7 +41,6 @@ class Token extends BaseService {
     if (current > exp) throw new TokenException(ERROR_CODE.TOKEN_EXPIRED)
     return decode
   }
-
 }
 
 export default new Token()

@@ -39,19 +39,19 @@ export const getMidnightUnixTS = (): number => {
   const hours = currentDate.hours()
   const minutes = currentDate.minutes()
   const seconds = currentDate.seconds()
-  return Math.floor((ts - (hours * 3600 * 1000) - (minutes * 60 * 1000) - (seconds * 1000)) / 1000)
+  return Math.floor((ts - hours * 3600 * 1000 - minutes * 60 * 1000 - seconds * 1000) / 1000)
 }
 
 /**
  * 获取当天零点时的时间戳
  */
-export const getMignightTS = (): number => {
+export const getMidnightTS = (): number => {
   const ts = getTS()
   const currentDate = moment(ts)
   const hours = currentDate.hours()
   const minutes = currentDate.minutes()
   const seconds = currentDate.seconds()
-  return ts - (hours * 3600 * 1000) - (minutes * 60 * 1000) - (seconds * 1000)
+  return ts - hours * 3600 * 1000 - minutes * 60 * 1000 - seconds * 1000
 }
 
 /**
@@ -68,7 +68,7 @@ export const getMonthUnixTS = (prevMonth: number = 0): number => {
  * @param {string} format 指定日期格式，可以为空，默认为'YY-MM-DD hh:mm:ss'
  * @returns 日期字符串
  */
-export const generateDateByTs = (ts: number|undefined|null, format: string = 'YY-MM-DD hh:mm:ss'): string => {
+export const generateDateByTs = (ts: number | undefined | null, format: string = 'YY-MM-DD hh:mm:ss'): string => {
   if (!ts) ts = getTS()
   return moment(ts).format(format)
 }
@@ -91,11 +91,7 @@ export const isEnv = (env: PROCESS_ENV): boolean => {
 
 export const getEnv = (): PROCESS_ENV => {
   const env = process.env.NODE_ENV?.trim() || ''
-  if (
-    env === PROCESS_ENV.DEVELOPMENT ||
-    env === PROCESS_ENV.SIMULATION ||
-    env === PROCESS_ENV.PRODUCTION
-  ) return env
+  if (env === PROCESS_ENV.DEVELOPMENT || env === PROCESS_ENV.SIMULATION || env === PROCESS_ENV.PRODUCTION) return env
   else return PROCESS_ENV.UNKNOWN
 }
 
@@ -103,7 +99,11 @@ export const getConfig = (attribute: ENV_VARIABLE) => {
   return process.env[attribute] || ''
 }
 
-export const returnJSON = (code: ERROR_CODE | 200 | 201 | 500, msg: string, data?: any) => ({ code, msg, data: data ?? null })
+export const returnJSON = (code: ERROR_CODE | 200 | 201 | 500, msg: string, data?: any) => ({
+  code,
+  msg,
+  data: data ?? null,
+})
 
 /**
  * 判断数据是否为Enum的其中一个值
