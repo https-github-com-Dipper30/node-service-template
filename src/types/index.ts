@@ -8,9 +8,9 @@ export type TAccount = {
 }
 
 export type TUserSimpleProfile = {
-  id: number,
-  username: string,
-  avatar: string,
+  id: number
+  username: string
+  avatar: string
 }
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>

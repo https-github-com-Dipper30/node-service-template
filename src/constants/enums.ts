@@ -4,7 +4,7 @@ export enum AuthCode {
   MODIFY_AUTH = 10,
   MODIFY_ACCOUNT = 15,
   LOGIN_BUZ = 1000,
-  LOGIN_CLIENT = 2000
+  LOGIN_CLIENT = 2000,
 }
 
 export enum RoleCode {

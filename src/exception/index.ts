@@ -5,11 +5,4 @@ import DatabaseException from './DatabaseException'
 import RequestNotFoundException from './RequestNotFoundException'
 import UserException from './UserException'
 
-export {
-  AuthException,
-  ParameterException,
-  TokenException,
-  DatabaseException,
-  RequestNotFoundException,
-  UserException,
-}
+export { AuthException, ParameterException, TokenException, DatabaseException, RequestNotFoundException, UserException }
