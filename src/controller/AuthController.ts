@@ -1,6 +1,6 @@
 import { AuthService, TokenService } from '@/service'
 import { TokenDecode } from '@/types'
-import { returnJSON } from '@/utils'
+import { returnJSON, decryptMessage } from '@/utils'
 import { Request, Response } from 'express'
 import BaseController from './BaseController'
 
@@ -13,7 +13,7 @@ class Auth extends BaseController {
 
   async login(req: any, res: any) {
     const { username, password } = req.body
-    const user = await AuthService.loginAccount({ username, password })
+    const user = await AuthService.loginAccount({ username, password: decryptMessage(password) })
 
     const token = await TokenService.generateToken({ id: user.id, rid: user.role.id, auth: user.auth })
 
