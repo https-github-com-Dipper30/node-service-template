@@ -74,3 +74,5 @@ server.listen(PORT, () => {
   console.log(`APTX4869 Studio Template Server Started Successfully on port ${PORT}!`)
   console.log(`Current Env: ${ENV}`)
 })
+
+export default app

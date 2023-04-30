@@ -1,7 +1,7 @@
 import { HomeService } from '@/service'
 import { Request, Response } from 'express'
 import BaseController from './BaseController'
-import { returnJSON } from '@/utils'
+import { wrapJSON } from '@/utils'
 
 class Home extends BaseController {
   constructor() {
@@ -10,24 +10,30 @@ class Home extends BaseController {
 
   async getCurrentActiveUsers(req: Request, res: Response) {
     const users = await HomeService.getCurrentActiveUsers()
-    returnJSON(200, 'ok', {
-      total: users.length,
-      users: users,
-    })
+    res.json(
+      wrapJSON(200, 'ok', {
+        total: users.length,
+        users: users,
+      }),
+    )
   }
 
   async getDailyActiveUsers(req: Request, res: Response) {
     const dau = await HomeService.getDailyActiveUsers()
-    returnJSON(200, 'ok', {
-      dau,
-    })
+    res.json(
+      wrapJSON(200, 'ok', {
+        dau,
+      }),
+    )
   }
 
   async getMonthlyActiveUsers(req: Request, res: Response) {
     const mau = await HomeService.getMonthlyActiveUsers()
-    returnJSON(200, 'ok', {
-      mau,
-    })
+    res.json(
+      wrapJSON(200, 'ok', {
+        mau,
+      }),
+    )
   }
 }
 

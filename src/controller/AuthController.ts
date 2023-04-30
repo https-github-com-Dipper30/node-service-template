@@ -1,6 +1,6 @@
 import { AuthService, TokenService } from '@/service'
 import { TokenDecode } from '@/types'
-import { returnJSON, decryptMessage } from '@/utils'
+import { wrapJSON, decryptMessage } from '@/utils'
 import { Request, Response } from 'express'
 import BaseController from './BaseController'
 
@@ -13,14 +13,16 @@ class Auth extends BaseController {
 
   async login(req: any, res: any) {
     const { username, password } = req.body
-    const user = await AuthService.loginAccount({ username, password: decryptMessage(password) })
+    const user = await AuthService.loginAccount({ username, password })
 
     const token = await TokenService.generateToken({ id: user.id, rid: user.role.id, auth: user.auth })
 
-    returnJSON(200, 'signed in', {
-      user,
-      token,
-    })
+    res.json(
+      wrapJSON(200, 'signed in', {
+        user,
+        token,
+      }),
+    )
   }
 
   async autoLogin(req: Request, res: Response) {
@@ -30,23 +32,25 @@ class Auth extends BaseController {
     const user = await AuthService.getUserById(result.uid)
     const auth = user.auth.map((a: any) => a.id)
     const newToken = await TokenService.generateToken({ id: user.id, rid: user.rid, auth })
-    returnJSON(200, 'ok', {
-      user: { ...user, auth },
-      token: newToken,
-    })
+    res.json(
+      wrapJSON(200, 'ok', {
+        user: { ...user, auth },
+        token: newToken,
+      }),
+    )
   }
 
   async isUsernameAvailable(req: Request, res: Response) {
     const { username } = req.query
     const available = await AuthService.isUsernameExisting(username as string)
 
-    returnJSON(200, 'ok', !available)
+    res.json(wrapJSON(200, 'ok', !available))
   }
 
   async getUserById(req: Request, res: Response) {
     const user = await AuthService.getUserById(Number(req.query.id))
 
-    returnJSON(200, 'ok', user)
+    res.json(wrapJSON(200, 'ok', user))
   }
 
   async getUsers(req: Request, res: Response) {
@@ -66,7 +70,7 @@ class Auth extends BaseController {
 
     const users = await AuthService.getUsers(data)
 
-    returnJSON(200, 'ok', users)
+    res.json(wrapJSON(200, 'ok', users))
   }
 
   /**
@@ -79,13 +83,13 @@ class Auth extends BaseController {
     const { username, password, rid, tokenUserId: cid } = req.body
     const uid = await AuthService.createAccount({ username, password, rid, cid })
 
-    returnJSON(201, 'account created', { uid })
+    res.json(wrapJSON(201, 'account created', { uid }))
   }
 
   async updateUserAuth(req: Request, res: Response) {
     const updated = await AuthService.updateUserAuth(req.body)
 
-    returnJSON(201, 'user auth updated', updated)
+    res.json(wrapJSON(201, 'user auth updated', updated))
   }
 
   /**
@@ -96,67 +100,83 @@ class Auth extends BaseController {
 
     const token = await TokenService.generateToken({ id: updated.id, rid: updated.role.id, auth: updated.auth })
 
-    returnJSON(201, 'user info updated', {
-      user: updated,
-      token,
-    })
+    res.json(
+      wrapJSON(201, 'user info updated', {
+        user: updated,
+        token,
+      }),
+    )
   }
 
   async createAuthority(req: Request, res: Response) {
     const { id, name, description } = req.body
     const auth = await AuthService.createAuthority({ id, name, description })
 
-    returnJSON(201, 'auth created', {
-      auth,
-    })
+    res.json(
+      wrapJSON(201, 'auth created', {
+        auth,
+      }),
+    )
   }
 
   async getAuthorities(req: Request, res: Response) {
     const auth = await AuthService.getAuthorities(req.query)
 
-    returnJSON(200, 'ok', {
-      auth,
-    })
+    res.json(
+      wrapJSON(200, 'ok', {
+        auth,
+      }),
+    )
   }
 
   async updateAuthority(req: Request, res: Response) {
     const auth = await AuthService.updateAuthority(req.body)
 
-    returnJSON(201, 'auth updated', {
-      auth,
-    })
+    res.json(
+      wrapJSON(201, 'auth updated', {
+        auth,
+      }),
+    )
   }
 
   async createRole(req: Request, res: Response) {
     const role = await AuthService.createRole(req.body)
 
-    returnJSON(200, 'role created', {
-      role,
-    })
+    res.json(
+      wrapJSON(200, 'role created', {
+        role,
+      }),
+    )
   }
 
   async getRoles(req: Request, res: Response) {
     const roles = await AuthService.getRoles(req.query)
 
-    returnJSON(200, 'ok', {
-      roles,
-    })
+    res.json(
+      wrapJSON(200, 'ok', {
+        roles,
+      }),
+    )
   }
 
   async getAdminRoles(req: Request, res: Response) {
     const roles = await AuthService.getAdminRoles()
 
-    returnJSON(200, 'ok', {
-      roles,
-    })
+    res.json(
+      wrapJSON(200, 'ok', {
+        roles,
+      }),
+    )
   }
 
   async updateRole(req: Request, res: Response) {
     const role = await AuthService.updateRole(req.body)
 
-    returnJSON(201, 'role updated', {
-      role,
-    })
+    res.json(
+      wrapJSON(201, 'role updated', {
+        role,
+      }),
+    )
   }
 }
 
