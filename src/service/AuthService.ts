@@ -43,7 +43,7 @@ class Auth extends BaseService {
 
   async loginAccount(p: { username: string; password: string }) {
     const { username, password } = p
-
+    console.log('??? ', p)
     const encryptedPassword = await encryptMD5(password)
     const user = await UserModel.findOne({
       where: {
