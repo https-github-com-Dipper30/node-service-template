@@ -55,7 +55,7 @@ class Auth extends BaseService {
           as: 'role',
         },
       ],
-      attributes: ['id', 'username', 'password'],
+      attributes: ['id', 'username'],
     })
 
     if (!user) throw new AuthException(ERROR_CODE.AUTH_ERROR, 'User Not Found')
