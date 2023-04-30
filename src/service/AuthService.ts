@@ -43,11 +43,10 @@ class Auth extends BaseService {
 
   async loginAccount(p: { username: string; password: string }) {
     const { username, password } = p
-    console.log('??? ', p)
     const encryptedPassword = await encryptMD5(password)
     const user = await UserModel.findOne({
       where: {
-        username,
+        username: sequelize.where(sequelize.fn('LOWER', sequelize.col('username')), username.toLowerCase()),
         password: encryptedPassword,
       },
       include: [
@@ -56,7 +55,7 @@ class Auth extends BaseService {
           as: 'role',
         },
       ],
-      attributes: ['id', 'username'],
+      attributes: ['id', 'username', 'password'],
     })
 
     if (!user) throw new AuthException(ERROR_CODE.AUTH_ERROR, 'User Not Found')

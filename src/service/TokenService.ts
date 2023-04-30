@@ -19,11 +19,12 @@ class Token extends BaseService {
   async generateToken(account: { id: number; rid: number; auth: number[] }) {
     const { id, rid, auth } = account
     try {
-      return jwt.sign({ uid: id, rid, auth }, APP_CONFIG.KEYS.TOKEN_PRIVATE_KEY, {
+      const token = jwt.sign({ uid: id, rid, auth }, APP_CONFIG.KEYS.TOKEN_PRIVATE_KEY, {
         expiresIn: APP_CONFIG.KEYS.TOKEN_EXPIRE_IN,
       })
+      return token
     } catch (error) {
-      return new TokenException(ERROR_CODE.TOKEN_ERROR, 'Token Generator Error')
+      throw new TokenException(ERROR_CODE.TOKEN_ERROR, 'Token Generator Error')
     }
   }
 
