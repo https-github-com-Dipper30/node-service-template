@@ -4,6 +4,8 @@ import crypto from 'crypto'
 import moment from 'moment'
 import { ENV_VARIABLE } from '@/constants'
 import { APP_CONFIG } from '@/config'
+export * from './log'
+export * from './validator'
 
 /**
  * MD5加密
