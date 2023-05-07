@@ -101,7 +101,7 @@ export const getConfig = (attribute: ENV_VARIABLE) => {
   return process.env[attribute] || ''
 }
 
-export const wrapJSON = (code: ERROR_CODE | 200 | 201 | 500, msg: string, data?: any) => ({
+export const formJSON = (code: ERROR_CODE | 200 | 201 | 500, msg: string, data?: any) => ({
   code,
   msg,
   data: data ?? null,
