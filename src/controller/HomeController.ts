@@ -1,39 +1,51 @@
 import { HomeService } from '@/service'
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import BaseController from './BaseController'
-import { wrapJSON } from '@/utils'
+import { formJSON } from '@/utils'
 
 class Home extends BaseController {
   constructor() {
     super()
   }
 
-  async getCurrentActiveUsers(req: Request, res: Response) {
-    const users = await HomeService.getCurrentActiveUsers()
-    res.json(
-      wrapJSON(200, 'ok', {
-        total: users.length,
-        users: users,
-      }),
-    )
+  async getCurrentActiveUsers(req: Request, res: Response, next: NextFunction) {
+    try {
+      const users = await HomeService.getCurrentActiveUsers()
+      res.json(
+        formJSON(200, 'ok', {
+          total: users.length,
+          users: users,
+        }),
+      )
+    } catch (error) {
+      next(error)
+    }
   }
 
-  async getDailyActiveUsers(req: Request, res: Response) {
-    const dau = await HomeService.getDailyActiveUsers()
-    res.json(
-      wrapJSON(200, 'ok', {
-        dau,
-      }),
-    )
+  async getDailyActiveUsers(req: Request, res: Response, next: NextFunction) {
+    try {
+      const dau = await HomeService.getDailyActiveUsers()
+      res.json(
+        formJSON(200, 'ok', {
+          dau,
+        }),
+      )
+    } catch (error) {
+      next(error)
+    }
   }
 
-  async getMonthlyActiveUsers(req: Request, res: Response) {
-    const mau = await HomeService.getMonthlyActiveUsers()
-    res.json(
-      wrapJSON(200, 'ok', {
-        mau,
-      }),
-    )
+  async getMonthlyActiveUsers(req: Request, res: Response, next: NextFunction) {
+    try {
+      const mau = await HomeService.getMonthlyActiveUsers()
+      res.json(
+        formJSON(200, 'ok', {
+          mau,
+        }),
+      )
+    } catch (error) {
+      next(error)
+    }
   }
 }
 
