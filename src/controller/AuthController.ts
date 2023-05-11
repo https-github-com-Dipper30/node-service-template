@@ -4,8 +4,6 @@ import { formJSON } from '@/utils'
 import { NextFunction, Request, Response } from 'express'
 import BaseController from './BaseController'
 
-const defaultPager = { page: 1, size: 20 }
-
 class Auth extends BaseController {
   constructor() {
     super()
@@ -77,7 +75,7 @@ class Auth extends BaseController {
         rid?: number
         page: number
         size: number
-      } = { ...defaultPager }
+      } = { ...this.defaultPager }
       if (query.id) data.id = Number(query.id)
       if (query.username) data.username = query.username
       if (query.rid) data.rid = Number(query.rid)

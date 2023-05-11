@@ -9,6 +9,7 @@ import router from '@/router'
 import { PROCESS_ENV } from '@/constants'
 import { getEnv, isEnv } from '@/utils'
 import { APP_CONFIG } from '@/config'
+import { errorHandler } from './middlewares'
 
 if (isEnv(PROCESS_ENV.UNKNOWN)) {
   throw new Error('Unknown Process Env')
@@ -43,20 +44,12 @@ app.all('*', async (req: Request, res: Response, next: NextFunction) => {
 // 设置路由
 router(app)
 
+// catch exception and log out error message
+app.use(errorHandler)
+
 app.use('*', (req: Request, res: Response) => {
   res.writeHead(404)
-  res.end('hello')
-})
-
-// catch exception and log out error message
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  if (err) {
-    const status = err.code ? 200 : 500
-    res.status(status).json({
-      code: err.code || 500,
-      msg: err.msg || 'Bad Request',
-    })
-  }
+  res.end('404 Not Found')
 })
 
 const server: Server =
