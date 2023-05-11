@@ -1,6 +1,10 @@
 /// <reference types="node" />
+import { NextFunction, Request, Response } from 'express'
+
 export * from './api'
 export * from './common'
+
+export type MiddleWare = (req: Request, res: Response, next: NextFunction) => void
 
 export type TAccount = {
   username: string

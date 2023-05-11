@@ -10,7 +10,7 @@ const router: Router = Router()
 // 账号与用户
 router.post('/login', AuthValidator.postLogin, AuthController.login)
 router.post('/autoLogin', AuthValidator.postAutoLogin, AuthController.autoLogin)
-router.get('/users', AuthValidator.getUsers, AuthController.getUsers)
+router.get('/users', AuthValidator.getUsers, AuthController.getUsers.bind(AuthController))
 router.get('/user', AuthValidator.getUser, AuthController.getUserById)
 router.get('/usernameAvailability', AuthValidator.getUsernameAvailability, AuthController.isUsernameAvailable)
 // 创建管理员账号
