@@ -5,8 +5,10 @@ import {
   RoleAuthModel,
   sequelize,
 } from '@/db/models';
+import { Op } from 'sequelize';
 
 export default class BaseService {
+  Op: typeof Op;
   models: {
     user: typeof UserModel;
     role: typeof RoleModel;
@@ -23,6 +25,7 @@ export default class BaseService {
       roleAuth: RoleAuthModel,
     };
     this.sequelize = sequelize;
+    this.Op = Op;
   }
 
   get activeUserModel() {

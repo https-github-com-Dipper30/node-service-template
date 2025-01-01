@@ -1,4 +1,4 @@
-import { Dialect } from "sequelize";
+import { Dialect } from 'sequelize';
 
 export namespace Custom {
   export type Pagination<T = any> = T & {

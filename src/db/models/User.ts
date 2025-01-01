@@ -12,7 +12,6 @@ import {
 import Role from './Role';
 import Authority from './Authority';
 import { isUnixTimeStamp } from '@/validators/helpers';
-import { Op } from 'sequelize';
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: CreationOptional<number>;
