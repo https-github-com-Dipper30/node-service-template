@@ -1,11 +1,10 @@
-import { Op } from 'sequelize';
+import { Request } from 'express';
 import { AuthException, DatabaseException, UserException } from '@/exceptions';
 import { encryptMD5, getTS } from '@/utils';
 import BaseService from './base';
 import { ERROR_CODE } from '@/exceptions/enums';
 import { AuthCode } from '@/utils/constants';
-import { AuthParams, Custom } from '@/types';
-import { Request } from 'express';
+import { AuthParams } from '@/types';
 
 class Auth extends BaseService {
   constructor() {
@@ -20,11 +19,6 @@ class Auth extends BaseService {
    */
   async isUsernameExisting(username: string, ignoreCase: boolean = true) {
     // mysql查询默认不区分大小写
-    this.activeUserModel.findOne({
-      where: {
-        username: '1',
-      },
-    });
     const usernameQuery = ignoreCase
       ? this.sequelize.where(
           this.sequelize.fn('LOWER', this.sequelize.col('username')),
@@ -89,11 +83,6 @@ class Auth extends BaseService {
       attributes: { exclude: ['password', 'deletedAt', 'updatedAt'] },
     });
     if (!user) throw new UserException(ERROR_CODE.USER_NOT_FOUND);
-    const roleAuthModels = await this.models.roleAuth.findAll({
-      where: {
-        rid: user.rid,
-      },
-    });
     return {
       ...user.dataValues,
       role: {
@@ -111,7 +100,7 @@ class Auth extends BaseService {
     if (id) where.id = id;
     if (username)
       where.username = {
-        [Op.like]: '%' + username + '%',
+        [this.Op.like]: '%' + username + '%',
       };
     if (rid) where.rid = rid;
 
@@ -375,7 +364,7 @@ class Auth extends BaseService {
     const rids = roleAuths.map((r: any) => r.rid);
     const roles = await this.models.role.findAll({
       where: {
-        id: { [Op.in]: rids },
+        id: { [this.Op.in]: rids },
       },
       include: [{ model: this.models.auth, as: 'auth' }],
       order: ['id'],

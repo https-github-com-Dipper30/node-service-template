@@ -7,7 +7,7 @@ import { ERROR_CODE } from '@/exceptions/enums';
  * @param { auth?: number[], role?: number[] } options
  */
 const authChecker = (options: { auth?: number[]; role?: number[] }) => {
-  return async function (req: Request, res: Response, next: NextFunction) {
+  return async function(req: Request, res: Response, next: NextFunction) {
     const { auth, role } = options;
     const { user } = req;
     if (!user) {

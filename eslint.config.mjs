@@ -25,7 +25,19 @@ export default [
     rules: {
       semi: ['warn', 'always'],
       quotes: ['warn', 'single'],
-      indent: ['warn', 2],
+      // indent: ['warn', 2, {
+      //   SwitchCase: 1,
+      //   CallExpression: {
+      //     arguments: 1,
+      //   },
+      //   ignoredNodes: ['ConditionalExpression'],
+      //   FunctionExpression: {
+      //     body: 1,
+      //     parameters: 1,
+      //   },
+      //   flatTernaryExpressions: true,
+      // offsetTernaryExpressions: true,
+      // }],
       'key-spacing': [
         'warn',
         {
@@ -67,7 +79,6 @@ export default [
         {
           anonymous: 'never',
           named: 'never',
-          function: 'never',
           asyncArrow: 'always',
         },
       ],
