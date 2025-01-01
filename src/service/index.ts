@@ -1,5 +1,5 @@
-import AuthService from './AuthService'
-import TokenService from './TokenService'
-import HomeService from './HomeService'
+import AuthService from './auth';
+import TokenService from './token';
+import HomeService from './home';
 
-export { AuthService, TokenService, HomeService }
+export { AuthService, TokenService, HomeService };

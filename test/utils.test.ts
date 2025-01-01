@@ -1,15 +1,15 @@
-import { describe, expect, test } from '@jest/globals'
-import { decryptMessage, mixMessage } from '@/utils/validator'
+import { describe, expect, test } from '@jest/globals';
+import { decryptMessage, encryptMessage } from '@/validators';
 
-describe('mixMessage function test', () => {
-  test('mixMessage', () => {
-    const pt = 'ok!123'
-    const ct = mixMessage('ok!123')
-    const decode = decryptMessage(ct)
-    expect(pt).toEqual(decode)
-  })
-})
+describe('encryptMessage function test', () => {
+  test('encryptMessage', () => {
+    const pt = 'ok!123';
+    const ct = encryptMessage('ok!123');
+    const decode = decryptMessage(ct);
+    expect(pt).toEqual(decode);
+  });
+});
 
-afterAll(done => {
-  done()
-})
+afterAll((done) => {
+  done();
+});
