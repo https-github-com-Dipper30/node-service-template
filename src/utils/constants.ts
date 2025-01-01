@@ -1,0 +1,49 @@
+export enum PROCESS_ENV {
+  PRODUCTION = 'production',
+  SIMULATION = 'simulation',
+  DEVELOPMENT = 'development',
+  UNKNOWN = 'unknown',
+}
+
+export const PORT = {
+  [PROCESS_ENV.DEVELOPMENT]: 3030,
+  [PROCESS_ENV.SIMULATION]: 3031,
+  [PROCESS_ENV.PRODUCTION]: 3030,
+};
+
+export enum ENV_VARIABLE {
+  NAME = 'NAME',
+  // config
+  PORT = 'PORT',
+  DOMAIN = 'DOMAIN',
+
+  // keys
+  TOKEN_PRIVATE_KEY = 'TOKEN_PRIVATE_KEY',
+  TOKEN_PUBLIC_KEY = 'TOKEN_PUBLIC_KEY',
+  TOKEN_EXPIRE_IN = 'TOKEN_EXPIRE_IN',
+  MD5_PRIVATE_KEY = 'MD5_PRIVATE_KEY',
+
+  // db
+  USERNAME = 'USERNAME',
+  PASSWORD = 'PASSWORD',
+  DATABASE = 'DATABASE',
+  HOST = 'HOST',
+  DIALECT = 'DIALECT',
+  DIALECT_OPTION = 'DIALECT_OPTION',
+}
+
+export enum AuthCode {
+  LOGIN_ADMIN = 1,
+  CREATE_ACCOUNT = 5,
+  MODIFY_AUTH = 10,
+  MODIFY_ACCOUNT = 15,
+  LOGIN_BUZ = 1000,
+  LOGIN_CLIENT = 2000,
+}
+
+export enum RoleCode {
+  SUPER_ADMIN = 1,
+  ADMIN = 2,
+  BUZ = 50,
+  USER = 100,
+}

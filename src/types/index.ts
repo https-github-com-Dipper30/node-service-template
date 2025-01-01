@@ -1,21 +1,14 @@
 /// <reference types="node" />
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express';
 
-export * from './api'
-export * from './common'
+export * from './api';
+export * from './common';
 
-export type MiddleWare = (req: Request, res: Response, next: NextFunction) => void
+export type MiddleWare = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => void;
 
-export type TAccount = {
-  username: string
-  password: string
-}
-
-export type TUserSimpleProfile = {
-  id: number
-  username: string
-  avatar: string
-}
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
-export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;

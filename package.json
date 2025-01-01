@@ -1,6 +1,6 @@
 {
   "name": "node-service-template",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "APTX4869 Studio Node.js Server Template",
   "main": "index.js",
   "scripts": {
@@ -15,25 +15,25 @@
     "type": "git",
     "url": "git+https://github.com/https-github-com-Dipper30/node-service-template.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Dipper30",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/https-github-com-Dipper30/node-service-template/issues"
   },
   "homepage": "https://github.com/https-github-com-Dipper30/node-service-template#readme",
   "devDependencies": {
+    "@eslint/js": "^9.17.0",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "^16.18.24",
     "@types/sequelize": "^4.28.14",
-    "@types/supertest": "^2.0.12",
     "@types/uuid": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
     "@typescript-eslint/parser": "^5.59.1",
     "eslint": "^8.39.0",
-    "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "express": "^4.17.3",
     "nodemon": "^2.0.15",
+    "prettier": "^3.4.2",
     "sequelize-cli": "^6.4.1",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.2.1",
@@ -42,7 +42,7 @@
   "dependencies": {
     "@types/express": "^4.17.13",
     "@types/jest": "^29.2.4",
-    "aptx-validator": "^1.2.1",
+    "aptx-validator": "^3.2.0",
     "aws-sdk": "^2.1271.0",
     "body-parser": "^1.19.0",
     "dotenv": "^12.0.4",
@@ -55,9 +55,7 @@
     "module-alias": "^2.2.2",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
-    "prettier": "^2.8.8",
     "sequelize": "^6.23.2",
-    "supertest": "^6.3.3",
     "typescript": "^4.4.4",
     "uuid": "^8.3.2"
   },
