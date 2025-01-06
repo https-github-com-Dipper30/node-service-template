@@ -15,10 +15,8 @@ export namespace Custom {
 
   export type TokenDecode = {
     id: number;
-    rid: number;
     iat: number;
     exp: number;
-    auth: number[];
   };
 }
 
