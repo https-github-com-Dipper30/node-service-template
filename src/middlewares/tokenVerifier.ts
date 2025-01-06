@@ -4,8 +4,13 @@ import { TokenException } from '@/exceptions';
 import { APP_CONFIG } from '@/config';
 import { getUnixTS } from '@/utils';
 import { ERROR_CODE } from '@/exceptions/enums';
+import { AuthService } from '@/service';
 
-const tokenVerifier = (req: Request, res: Response, next: NextFunction) => {
+const tokenVerifier = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   // ignore path
   if (
     [
@@ -28,18 +33,24 @@ const tokenVerifier = (req: Request, res: Response, next: NextFunction) => {
   } catch (error) {
     throw new TokenException(ERROR_CODE.TOKEN_PARSE_ERROR);
   }
-  const { id, rid, auth, exp } = decode;
+  const { id, exp } = decode;
   const current = getUnixTS();
   if (current > exp) throw new TokenException(ERROR_CODE.TOKEN_EXPIRED);
 
-  // append user data to request
-  req.user = {
-    id,
-    rid: rid || 0,
-    auth: auth || [],
-  };
-
-  next();
+  try {
+    const userInfo = await AuthService.getUserById(id);
+    // append user data to request
+    req.user = {
+      id,
+      rid: userInfo.rid,
+      auth: userInfo.auth || [],
+    };
+    // console.log('Request User: ', req.user);
+    next();
+  } catch (error: any) {
+    console.error('Auth Error: ', error);
+    return next(error);
+  }
 };
 
 export default tokenVerifier;

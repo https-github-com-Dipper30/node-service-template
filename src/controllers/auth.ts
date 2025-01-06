@@ -15,8 +15,6 @@ class Auth extends BaseController {
       const user = await AuthService.loginAccount({ username, password });
       const token = await TokenService.generateToken({
         id: user.id,
-        rid: user.role.id,
-        auth: user.auth,
       });
 
       res.json(
@@ -37,8 +35,6 @@ class Auth extends BaseController {
       const user = await AuthService.getUserById(result.id);
       const newToken = await TokenService.generateToken({
         id: user.id,
-        rid: user.rid,
-        auth: user.auth,
       });
 
       res.json(
@@ -119,8 +115,6 @@ class Auth extends BaseController {
       const updated = await AuthService.updateUserAccount(req.body, req.user);
       const token = await TokenService.generateToken({
         id: updated.id,
-        rid: updated.role.id,
-        auth: updated.auth,
       });
 
       res.json(

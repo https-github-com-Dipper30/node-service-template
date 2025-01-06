@@ -12,20 +12,15 @@ class Token extends BaseService {
   }
 
   /**
-   * 对用户id, rid, auth进行加密生成token
-   * @param account
+   * 按照用户 id 生成token
    * @returns
    */
-  async generateToken(account: { id: number; rid: number; auth: number[] }) {
-    const { id, rid, auth } = account;
+  async generateToken(account: { id: number }) {
+    const { id } = account;
     try {
-      const token = jwt.sign(
-        { id: id, rid, auth },
-        APP_CONFIG.KEYS.TOKEN_PRIVATE_KEY,
-        {
-          expiresIn: APP_CONFIG.KEYS.TOKEN_EXPIRE_IN,
-        },
-      );
+      const token = jwt.sign({ id: id }, APP_CONFIG.KEYS.TOKEN_PRIVATE_KEY, {
+        expiresIn: APP_CONFIG.KEYS.TOKEN_EXPIRE_IN,
+      });
       return token;
     } catch (error) {
       throw new TokenException(ERROR_CODE.TOKEN_ERROR, 'Token Generator Error');
