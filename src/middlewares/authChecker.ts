@@ -7,24 +7,24 @@ import { ERROR_CODE } from '@/exceptions/enums';
  * @param { auth?: number[], role?: number[] } options
  */
 const authChecker = (options: { auth?: number[]; role?: number[] }) => {
-  return async function(req: Request, res: Response, next: NextFunction) {
+  return async function (req: Request, res: Response, next: NextFunction) {
     const { auth, role } = options;
     const { user } = req;
     if (!user) {
-      throw new AuthException(ERROR_CODE.AUTH_ERROR, 'No User Info');
+      next(new AuthException(ERROR_CODE.AUTH_ERROR, 'No User Info'));
     }
 
     if (auth) {
       // 判断用户权限是否包含全部auth
       for (const authToCheck of auth) {
         if (!user.rid || !user.auth.includes(authToCheck))
-          throw new AuthException(ERROR_CODE.AUTH_ERROR, 'Not Authorized');
+          next(new AuthException(ERROR_CODE.AUTH_ERROR, 'Not Authorized'));
       }
     }
     if (role) {
       // 判断用户角色是否满足其中一个角色
       if (!role.includes(user.rid))
-        throw new AuthException(ERROR_CODE.AUTH_ERROR, 'Not Authorized');
+        next(new AuthException(ERROR_CODE.AUTH_ERROR, 'Not Authorized'));
     }
 
     next();

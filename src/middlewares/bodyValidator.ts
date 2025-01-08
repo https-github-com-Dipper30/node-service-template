@@ -6,7 +6,7 @@ const bodyValidator = (v: AllValidator) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const isValid = v.test(req.body);
     if (!isValid) {
-      throw new ParameterException(null, v.getErrText());
+      next(new ParameterException(null, v.getErrText()));
     } else {
       next();
     }

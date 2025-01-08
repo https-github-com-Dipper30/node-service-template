@@ -4,7 +4,7 @@ import { TokenException } from '@/exceptions';
 import { APP_CONFIG } from '@/config';
 import { getUnixTS } from '@/utils';
 import { ERROR_CODE } from '@/exceptions/enums';
-import { AuthService } from '@/service';
+import { AuthService } from '@/services';
 
 const tokenVerifier = async (
   req: Request,

@@ -2,8 +2,6 @@
 import 'module-alias/register';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import http, { Server } from 'http';
-import https from 'https';
-import fs from 'fs';
 import router from '@/router';
 import { PROCESS_ENV } from '@/utils/constants';
 import { getEnv, isEnv } from '@/utils';
@@ -57,16 +55,7 @@ app.use('*', (req: Request, res: Response) => {
   res.end('404 Not Found');
 });
 
-const server: Server =
-  ENV === 'development'
-    ? http.createServer(app)
-    : https.createServer(
-      {
-        key: fs.readFileSync('cert/key.pem'),
-        cert: fs.readFileSync('cert/cert.pem'),
-      },
-      app,
-    );
+const server: Server = http.createServer(app);
 
 server.listen(PORT, () => {
   console.log(
