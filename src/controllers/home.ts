@@ -1,4 +1,4 @@
-import { HomeService } from '@/service';
+import { HomeService } from '@/services';
 import { NextFunction, Request, Response } from 'express';
 import BaseController from './base';
 import { formResponse } from '@/utils';

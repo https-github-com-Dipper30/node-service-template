@@ -1,4 +1,4 @@
-import { AuthService, TokenService } from '@/service';
+import { AuthService, TokenService } from '@/services';
 import { formResponse } from '@/utils';
 import { NextFunction, Request, Response } from 'express';
 import BaseController from './base';
